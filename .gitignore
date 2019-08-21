@@ -9,3 +9,5 @@ mvn.cmd
 *.ipr
 
 .DS_Store*
+
+*.log
