@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gx.app.ssm.dao.OrderDeliveryMapper">
+    <resultMap id="BaseResultMap" type="com.gx.app.ssm.biz.dto.OrderDelivery">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="vender_id" jdbcType="VARCHAR" property="venderId"/>
+        <result column="order_id" jdbcType="VARCHAR" property="orderId"/>
+        <result column="carrier_id" jdbcType="VARCHAR" property="carrierId"/>
+        <result column="carrier_name" jdbcType="VARCHAR" property="carrierName"/>
+        <result column="delivery_id" jdbcType="VARCHAR" property="deliveryId"/>
+        <result column="sync_status" jdbcType="INTEGER" property="syncStatus"/>
+        <result column="sync_desc" jdbcType="VARCHAR" property="syncDesc"/>
+        <result column="operator" jdbcType="VARCHAR" property="operator"/>
+        <result column="yn" jdbcType="INTEGER" property="yn"/>
+        <result column="created_date" jdbcType="TIMESTAMP" property="createdDate"/>
+        <result column="modified_date" jdbcType="TIMESTAMP" property="modifiedDate"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+      id,vender_id,order_id,carrier_id,carrier_name,delivery_id,sync_status,sync_desc,operator,yn,created_date,modified_date
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from sc_order_delivery_info
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="selectByUniqueKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from sc_order_delivery_info
+        where order_id = #{orderId,jdbcType=VARCHAR}
+    </select>
+    <select id="selectList" resultMap="BaseResultMap"
+            parameterType="com.gx.app.ssm.biz.dto.OrderDelivery">
+        select
+        <include refid="Base_Column_List"/>
+        from sc_order_delivery_info
+        <where>
+            <if test="venderId != null and venderId != ''">AND vender_id=#{venderId,jdbcType=VARCHAR}</if>
+            <if test="orderId != null and orderId != ''">AND order_id=#{orderId,jdbcType=VARCHAR}</if>
+            <if test="deliveryId != null and deliveryId != ''">AND delivery_id=#{deliveryId,jdbcType=VARCHAR}</if>
+            <if test="syncStatus != null">AND sync_status=#{syncStatus,jdbcType=INTEGER}</if>
+            <if test="carrierName != null and carrierName != ''">AND carrier_name like
+                CONCAT('%',#{carrierName,jdbcType=VARCHAR},'%')
+            </if>
+        </where>
+        ORDER BY id DESC
+    </select>
+    <insert id="upsertBatch" parameterType="java.util.List">
+        insert into sc_order_delivery_info
+        ( vender_id,order_id,carrier_id,carrier_name,delivery_id,operator)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.venderId},
+            #{item.orderId},
+            #{item.carrierId},
+            #{item.carrierName},
+            #{item.deliveryId},
+            #{item.operator}
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        vender_id = VALUES(vender_id),
+        carrier_name = VALUES(carrier_name),
+        delivery_id = VALUES(delivery_id),
+        modified_date = now()
+    </insert>
+    <insert id="insertSelective" parameterType="com.gx.app.ssm.biz.dto.OrderDelivery">
+        insert into sc_order_delivery_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="venderId != null">
+                vender_id,
+            </if>
+            <if test="orderId != null">
+                order_id,
+            </if>
+            <if test="carrierId != null">
+                carrier_id,
+            </if>
+            <if test="carrierName != null">
+                carrier_name,
+            </if>
+            <if test="deliveryId != null">
+                delivery_id,
+            </if>
+            <if test="syncStatus != null">
+                sync_status,
+            </if>
+            <if test="syncDesc != null">
+                sync_desc,
+            </if>
+            <if test="operator != null">
+                operator,
+            </if>
+            <if test="yn != null">
+                yn,
+            </if>
+            <if test="createdDate != null">
+                created_date,
+            </if>
+            <if test="modifiedDate != null">
+                modified_date,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="venderId != null">
+                #{venderId,jdbcType=VARCHAR},
+            </if>
+            <if test="orderId != null">
+                #{orderId,jdbcType=VARCHAR},
+            </if>
+            <if test="carrierId != null">
+                #{carrierId,jdbcType=VARCHAR},
+            </if>
+            <if test="carrierName != null">
+                #{carrierName,jdbcType=VARCHAR},
+            </if>
+            <if test="deliveryId != null">
+                #{deliveryId,jdbcType=VARCHAR},
+            </if>
+            <if test="syncStatus != null">
+                #{syncStatus,jdbcType=INTEGER},
+            </if>
+            <if test="operator != null">
+                #{operator,jdbcType=VARCHAR},
+            </if>
+            <if test="yn != null">
+                #{yn,jdbcType=INTEGER},
+            </if>
+            <if test="createdDate != null">
+                #{createdDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifiedDate != null">
+                #{modifiedDate,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateBatch" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update sc_order_delivery_info
+            <set>
+                <if test="item.venderId !=null">
+                    vender_id=#{item.venderId},
+                </if>
+                <if test="item.carrierId !=null">
+                    carrier_id=#{item.carrierId},
+                </if>
+                <if test="item.carrierName !=null">
+                    carrier_name=#{item.carrierName},
+                </if>
+                <if test="item.deliveryId !=null">
+                    delivery_id=#{item.deliveryId},
+                </if>
+                <if test="item.syncDesc !=null">
+                    sync_desc=#{item.syncDesc},
+                </if>
+                <if test="item.operator !=null">
+                    operator=#{item.operator},
+                </if>
+                modified_date=now()
+            </set>
+            where order_id = ${item.orderId}
+        </foreach>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.gx.app.ssm.biz.dto.OrderDelivery">
+        update sc_order_delivery_info
+        <set>
+            <if test="venderId !=null">
+                vender_id=#{venderId,jdbcType=VARCHAR},
+            </if>
+            <if test="orderId != null">
+                order_id = #{orderId,jdbcType=VARCHAR},
+            </if>
+            <if test="carrierId != null">
+                carrier_id = #{carrierId,jdbcType=VARCHAR},
+            </if>
+            <if test="carrierName != null">
+                carrier_name = #{carrierName,jdbcType=VARCHAR},
+            </if>
+            <if test="deliveryId != null">
+                delivery_id = #{deliveryId,jdbcType=VARCHAR},
+            </if>
+            <if test="syncStatus != null">
+                sync_status = #{syncStatus,jdbcType=INTEGER},
+            </if>
+            <if test="syncDesc != null">
+                sync_desc = #{syncDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="operator != null">
+                operator = #{operator,jdbcType=VARCHAR},
+            </if>
+            <if test="yn != null">
+                yn = #{yn,jdbcType=INTEGER},
+            </if>
+            <if test="createdDate != null">
+                created_date = #{createdDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifiedDate != null">
+                modified_date = #{modifiedDate,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByUniqueKeySelective" parameterType="com.gx.app.ssm.biz.dto.OrderDelivery">
+        update sc_order_delivery_info
+        <set>
+            <if test="venderId !=null">
+                vender_id=#{venderId,jdbcType=VARCHAR},
+            </if>
+            <if test="orderId != null">
+                order_id = #{orderId,jdbcType=VARCHAR},
+            </if>
+            <if test="carrierId != null">
+                carrier_id = #{carrierId,jdbcType=VARCHAR},
+            </if>
+            <if test="carrierName != null">
+                carrier_name = #{carrierName,jdbcType=VARCHAR},
+            </if>
+            <if test="deliveryId != null">
+                delivery_id = #{deliveryId,jdbcType=VARCHAR},
+            </if>
+            <if test="syncStatus != null">
+                sync_status = #{syncStatus,jdbcType=INTEGER},
+            </if>
+            <if test="syncDesc != null">
+                sync_desc = #{syncDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="operator != null">
+                operator = #{operator,jdbcType=VARCHAR},
+            </if>
+            <if test="yn != null">
+                yn = #{yn,jdbcType=INTEGER},
+            </if>
+            <if test="createdDate != null">
+                created_date = #{createdDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifiedDate != null">
+                modified_date = #{modifiedDate,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where order_id = #{orderId,jdbcType=VARCHAR}
+    </update>
+</mapper>

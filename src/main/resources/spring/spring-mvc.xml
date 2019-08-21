@@ -20,7 +20,7 @@
 
     <!-- 3.配置jsp 显示ViewResolver -->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <!--<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />-->
+        <!--<property name="viewClass" data="org.springframework.web.servlet.view.JstlView" />-->
         <property name="prefix" value="/WEB-INF/jsp/"/>
         <property name="suffix" value=".jsp"/>
     </bean>
@@ -29,14 +29,5 @@
         <property name="defaultEncoding" value="utf-8"/>
         <property name="maxUploadSize" value="10485760000"/>
         <property name="maxInMemorySize" value="40960"/>
-    </bean>
-
-    <!-- 属性文件读入 -->
-    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="locations">
-            <list>
-                <value>classpath:*.properties</value>
-            </list>
-        </property>
     </bean>
 </beans>
