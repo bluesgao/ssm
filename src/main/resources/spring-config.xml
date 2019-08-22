@@ -3,7 +3,7 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <!--加载配置文件-->
+    <!-- 加载属性文件 -->
     <!--<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">-->
         <!--<property name="locations">-->
             <!--<list>-->
@@ -11,7 +11,6 @@
             <!--</list>-->
         <!--</property>-->
     <!--</bean>-->
-    <!-- 加载配置文件 -->
     <context:property-placeholder location="classpath:props/*.properties" />
     <!--聚合spring配置文件-->
     <import resource="classpath:spring/spring*.xml"/>
