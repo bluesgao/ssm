@@ -7,8 +7,9 @@ import com.gx.app.ssm.web.vo.OrderDeliveryVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
-
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,15 +17,9 @@ import java.util.List;
 
 @Controller
 @Slf4j
-public class TestController {
-    @GetMapping("/index.html")
-    public String index() {
-        log.info("index");
-        return "index";
-    }
-
+public class CsvController {
     //处理文件上传
-    @RequestMapping(value = "/upload", method = RequestMethod.POST)
+    @PostMapping(value = "/upload")
     @ResponseBody
     public String upload(@RequestParam("file") MultipartFile file,
                          HttpServletRequest request) {
