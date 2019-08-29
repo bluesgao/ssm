@@ -35,7 +35,7 @@ public class CsvController {
 
         List<OrderDeliveryVo> deliveryVoList = null;
         try {
-            deliveryVoList = CsvUtils.parse(file.getInputStream(), OrderDeliveryVo.class);
+            deliveryVoList = CsvUtils.parse(file.getInputStream(), OrderDeliveryVo.class,"GBK");
         } catch (Exception e) {
             log.error("csv parse error:{}", e);
         }

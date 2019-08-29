@@ -4,7 +4,7 @@ import com.opencsv.bean.CsvBindByName;
 
 
 public class OrderDeliveryVo {
-    @CsvBindByName(column = "商户")
+    @CsvBindByName(column = "商家ID")
     private String venderId;
     @CsvBindByName(column = "订单号")
     private String orderId;
